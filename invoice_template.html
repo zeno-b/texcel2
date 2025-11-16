@@ -6,117 +6,454 @@
   <title>Invoice {{InvoiceNumber}}</title>
   <style>
     :root {
-      --brand:#0f172a;--ink:#0b1220;--muted:#6b7280;--line:#e5e7eb;--bg:#fff;--chip:#f1f5f9;
+      color-scheme: light;
+      font-size: 15px;
+      --font-sans: "Aptos", "Aptos Display", "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+      --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      --ink: #0e2841;
+      --ink-soft: #5c6b7c;
+      --brand: #156082;
+      --brand-strong: #0f4c66;
+      --accent: #e97132;
+      --surface: #ffffff;
+      --surface-muted: #f5f7fb;
+      --chip: #eaf2f7;
+      --line: #d4dbe8;
+      --shadow: 0 18px 35px rgba(15, 45, 70, 0.08);
     }
-    html,body{background:var(--bg);color:var(--ink);font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,Noto Sans,"Apple Color Emoji","Segoe UI Emoji";}
-    .container{max-width:900px;margin:0 auto;padding:32px;}
-    header{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-bottom:24px;}
-    .logo{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:14px;background:var(--brand);color:#fff;font-weight:700;letter-spacing:.5px;}
-    .org{font-weight:700;font-size:20px;}
-    .sub{color:var(--muted);}
-    .meta{display:grid;gap:8px;justify-items:end;}
-    .chip{background:var(--chip);padding:6px 10px;border-radius:999px;font-weight:600;}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0;}
-    .card{border:1px solid var(--line);border-radius:16px;padding:16px;}
-    .card h3{margin:0 0 8px;font-size:13px;letter-spacing:.02em;color:var(--muted);text-transform:uppercase;}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;}
-    table{width:100%;border-collapse:collapse;}
-    thead th{text-align:left;font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--line);padding:10px 8px;}
-    tbody td{padding:12px 8px;vertical-align:top;border-bottom:1px solid var(--line);}
-    .right{text-align:right;}
-    .totals{margin-top:12px;margin-left:auto;width:min(420px,100%);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
-    .totals .row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px 14px;}
-    .totals .row+.row{border-top:1px solid var(--line);}
-    .totals .grand{font-weight:800;font-size:18px;}
-    footer{margin-top:36px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;color:var(--muted);font-size:12px;}
-    @media print{@page{size:A4;margin:18mm;} .container{padding:0;} .no-print{display:none!important;} body{-webkit-print-color-adjust:exact;print-color-adjust:exact;} footer{position:fixed;bottom:18mm;left:18mm;right:18mm;}}
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--surface-muted);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1,h2,h3,h4 { margin: 0; font-weight: 600; color: var(--ink); }
+    h3 { font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+    p { margin: 0; }
+    .page {
+      max-width: 980px;
+      margin: clamp(12px, 4vw, 48px) auto;
+      padding: clamp(28px, 5vw, 56px);
+      background: var(--surface);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    header.hero {
+      padding: 28px;
+      border-radius: 24px;
+      background: radial-gradient(circle at 0% 0%, rgba(21,96,130,.16), transparent), linear-gradient(135deg, #fafdff 0%, #f1f5f9 60%, #ffffff 100%);
+      display: grid;
+      gap: 24px;
+      grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+      border: 1px solid rgba(14,40,65,0.08);
+    }
+    .hero__brand {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .logo {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      background: linear-gradient(150deg, var(--brand) 0%, var(--brand-strong) 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      display: grid;
+      place-items: center;
+      text-transform: uppercase;
+    }
+    .eyebrow {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--ink-soft);
+      margin-bottom: 4px;
+    }
+    .org-name { font-size: clamp(1.3rem, 2.2vw, 1.9rem); font-weight: 700; }
+    .subtle {
+      color: var(--ink-soft);
+      margin-top: 6px;
+    }
+    .hero__totals {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .stat-card {
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid rgba(21,96,130,0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+    .stat-card span {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-soft);
+      margin-bottom: 6px;
+    }
+    .stat-card strong {
+      display: block;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--brand);
+      font-family: var(--font-mono);
+      letter-spacing: -0.01em;
+    }
+    .stat-card small {
+      color: var(--ink-soft);
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px 18px;
+      font-size: 0.92rem;
+    }
+    .meta-grid dt {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 4px;
+    }
+    .meta-grid dd {
+      margin: 0;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: var(--brand-strong);
+      font-weight: 600;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px;
+      background: linear-gradient(145deg, #ffffff 0%, #fbfdff 100%);
+    }
+    .card strong { font-weight: 600; }
+    .stack { display: grid; gap: 6px; font-size: 0.95rem; }
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+    }
+    .chip-group span {
+      background: var(--chip);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .table-card {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    .table-card header {
+      padding: 22px 26px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(21,96,130,0.08), rgba(255,255,255,0));
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    table thead {
+      background: #f6f8fb;
+    }
+    th, td {
+      padding: 14px 18px;
+      border-bottom: 1px solid #edf0f5;
+    }
+    th {
+      text-align: left;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    td.right, th.right { text-align: right; }
+    td.mono { font-family: var(--font-mono); }
+    tbody tr:last-child td { border-bottom: none; }
+    .totals-card {
+      margin-top: 18px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      padding: 20px;
+      background: #fff;
+      display: grid;
+      gap: 12px;
+    }
+    .totals-card .row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+      gap: 16px;
+    }
+    .totals-card .row span {
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .totals-card .row strong {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+    }
+    .totals-card .grand {
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+    .totals-card .grand strong {
+      font-size: 1.4rem;
+      color: var(--accent);
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    .notes {
+      margin-top: 10px;
+      padding: 16px;
+      border-radius: 16px;
+      background: var(--surface-muted);
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+    }
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+    }
+    .no-print {
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 0.8rem;
+    }
+    @media (max-width: 720px) {
+      header.hero { grid-template-columns: 1fr; }
+      .hero__brand { flex-direction: column; align-items: flex-start; }
+      .logo { width: 60px; height: 60px; }
+      .page { border-radius: 0; margin: 0; padding: 24px 18px 42px; }
+      .table-card header { padding: 18px; }
+      th, td { padding: 12px; }
+    }
+    @media (max-width: 560px) {
+      table thead { display: none; }
+      table tbody tr {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 14px 18px;
+      }
+      table tbody td {
+        border: none;
+        padding: 0;
+      }
+      table tbody td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 2px;
+      }
+      table tbody td.right {
+        text-align: left;
+      }
+    }
+    @media print {
+      :root { font-size: 13px; }
+      body { background: #fff; }
+      .page {
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      header.hero, .card, .table-card, .totals-card {
+        box-shadow: none;
+        background: #fff;
+      }
+      .no-print { display: none !important; }
+      @page { size: A4; margin: 16mm; }
+    }
   </style>
 </head>
 <body>
-<div class="container">
-<header>
-  <div style="display:flex;gap:14px;align-items:center;">
-    <div class="logo">LOGO</div>
-    <div>
-      <div class="org">{{CompanyName}}</div>
-      <div class="sub">{{CompanyAddress}} · VAT: {{CompanyVAT}} · {{CompanyEmail}} · {{CompanyPhone}}</div>
+<article class="page">
+  <header class="hero">
+    <div class="hero__brand">
+      <div class="logo">LOGO</div>
+      <div>
+        <p class="eyebrow">Invoice</p>
+        <div class="org-name">{{CompanyName}}</div>
+        <p class="subtle">{{CompanyAddress}} · VAT {{CompanyVAT}} · {{CompanyEmail}} · {{CompanyPhone}}</p>
+      </div>
     </div>
+    <div class="hero__totals">
+      <div class="stat-card">
+        <span>Total due</span>
+        <strong>{{Currency}} {{Total}}</strong>
+        <small>Pay by {{DueDate}} · {{PaymentTerms}} day terms</small>
+      </div>
+      <dl class="meta-grid">
+        <div>
+          <dt>Invoice #</dt>
+          <dd>{{InvoiceNumber}}</dd>
+        </div>
+        <div>
+          <dt>Invoice date</dt>
+          <dd>{{InvoiceDate}}</dd>
+        </div>
+        <div>
+          <dt>Due date</dt>
+          <dd>{{DueDate}}</dd>
+        </div>
+        <div>
+          <dt>Currency</dt>
+          <dd>{{Currency}}</dd>
+        </div>
+      </dl>
+    </div>
+  </header>
+
+  <section class="grid">
+    <article class="card">
+      <div class="pill">Bill to</div>
+      <div class="stack" style="margin-top:12px;">
+        <strong>{{ClientName}}</strong>
+        <span>{{ClientAddress}}</span>
+        <span>VAT {{ClientVAT}}</span>
+        <span>Contact {{ContactName}} · {{ContactEmail}}</span>
+        <span>PO {{PONumber}} · Ref {{AdditionalNumber}}</span>
+        <span>Contract {{ContractID}}</span>
+      </div>
+    </article>
+    <article class="card">
+      <div class="pill">From</div>
+      <div class="stack" style="margin-top:12px;">
+        <strong>{{CompanyName}}</strong>
+        <span>{{CompanyAddress}}</span>
+        <span>VAT {{CompanyVAT}}</span>
+        <span>{{CompanyEmail}} · {{CompanyPhone}}</span>
+      </div>
+    </article>
+  </section>
+
+  <section class="table-card">
+    <header>
+      <div class="pill">Invoice lines</div>
+      <p class="subtle" style="margin-top:8px;">{{ConsultantName}} · {{PeriodLabel}}</p>
+    </header>
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:40%" />
+          <col style="width:12%" />
+          <col style="width:18%" />
+          <col style="width:10%" />
+          <col style="width:20%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="right">Qty</th>
+            <th class="right">Unit price ({{Currency}})</th>
+            <th class="right">VAT %</th>
+            <th class="right">Line total ({{Currency}})</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Description">{{ConsultantName}} — {{PeriodLabel}}</td>
+            <td class="right mono" data-label="Qty">{{BaseQuantity}} {{RateUnit}}</td>
+            <td class="right mono" data-label="Unit price">{{Currency}} {{ChargeRate}} / {{RateUnit}}</td>
+            <td class="right mono" data-label="VAT %">{{VATRate}}</td>
+            <td class="right mono" data-label="Line total">{{Currency}} {{BaseLineTotal}}</td>
+          </tr>
+          {{ExtrasRows}}
+        </tbody>
+      </table>
+    </div>
+    <div class="totals-card">
+      <div class="row">
+        <span>Subtotal</span>
+        <strong>{{Currency}} {{Subtotal}}</strong>
+      </div>
+      <div class="row">
+        <span>VAT ({{VATRate}})</span>
+        <strong>{{Currency}} {{VATAmount}}</strong>
+      </div>
+      <div class="row grand">
+        <span>Total due by {{DueDate}}</span>
+        <strong>{{Currency}} {{Total}}</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-grid">
+    <article class="card">
+      <div class="pill">Payment details</div>
+      <div class="stack" style="margin-top:12px;">
+        <span><strong>IBAN</strong> · <span class="mono">{{BankIBAN}}</span></span>
+        <span><strong>BIC</strong> · <span class="mono">{{BankBIC}}</span></span>
+        <span><strong>Reference</strong> · <span class="mono">{{StructuredReference}}</span></span>
+      </div>
+    </article>
+    <article class="card">
+      <div class="pill">Notes & terms</div>
+      <div class="notes">
+        <p>{{Notes}}</p>
+        <p>{{ReverseChargeNote}}</p>
+      </div>
+    </article>
+  </section>
+
+  <footer>
+    <div>Generated {{InvoiceDate}} · Currency {{Currency}}</div>
+    <div>Invoice {{InvoiceNumber}} · Page 1 of 1</div>
+  </footer>
+
+  <div class="no-print">
+    Print or export to PDF directly from your browser for a production-ready invoice.
   </div>
-  <div class="meta">
-    <div class="chip">Invoice</div>
-    <div><strong>Invoice #:</strong> <span class="mono">{{InvoiceNumber}}</span></div>
-    <div><strong>Invoice date:</strong> <span class="mono">{{InvoiceDate}}</span></div>
-    <div><strong>Due date:</strong> <span class="mono">{{DueDate}}</span> ({{PaymentTerms}} days)</div>
-    <div><strong>Currency:</strong> <span class="mono">{{Currency}}</span></div>
-  </div>
-</header>
-<section class="grid-2">
-  <div class="card">
-    <h3>Bill to</h3>
-    <div><strong>{{ClientName}}</strong></div>
-    <div>{{ClientAddress}}</div>
-    <div>VAT: {{ClientVAT}}</div>
-    <div>Contact: {{ContactName}} · {{ContactEmail}}</div>
-    <div>PO: {{PONumber}} · Ref: {{AdditionalNumber}}</div>
-    <div>Contract ID: {{ContractID}}</div>
-  </div>
-  <div class="card">
-    <h3>From</h3>
-    <div><strong>{{CompanyName}}</strong></div>
-    <div>{{CompanyAddress}}</div>
-    <div>VAT: {{CompanyVAT}}</div>
-    <div>{{CompanyEmail}} · {{CompanyPhone}}</div>
-  </div>
-</section>
-<section>
-  <table>
-    <thead>
-      <tr>
-        <th>Description</th>
-        <th class="right">Qty</th>
-        <th class="right">Unit price ({{Currency}})</th>
-        <th class="right">VAT %</th>
-        <th class="right">Line total ({{Currency}})</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{ConsultantName}} — {{PeriodLabel}}</td>
-        <td class="right mono">{{BaseQuantity}} {{RateUnit}}</td>
-        <td class="right mono">{{Currency}} {{ChargeRate}} / {{RateUnit}}</td>
-        <td class="right mono">{{VATRate}}</td>
-        <td class="right mono">{{Currency}} {{BaseLineTotal}}</td>
-      </tr>
-      {{ExtrasRows}}
-    </tbody>
-  </table>
-  <div class="totals">
-    <div class="row"><div>Subtotal</div><div class="mono">{{Currency}} {{Subtotal}}</div></div>
-    <div class="row"><div>VAT ({{VATRate}})</div><div class="mono">{{Currency}} {{VATAmount}}</div></div>
-    <div class="row grand"><div>Total due by <span class="mono">{{DueDate}}</span></div><div class="mono">{{Currency}} {{Total}}</div></div>
-  </div>
-</section>
-<section class="grid-2" style="margin-top:24px;">
-  <div class="card">
-    <h3>Payment details</h3>
-    <div><strong>IBAN</strong>: {{BankIBAN}}</div>
-    <div><strong>BIC</strong>: {{BankBIC}}</div>
-    <div><strong>Reference</strong>: {{StructuredReference}}</div>
-  </div>
-  <div class="card">
-    <h3>Notes & terms</h3>
-    <div>{{Notes}}</div>
-    <div>{{ReverseChargeNote}}</div>
-  </div>
-</section>
-<footer>
-  <div>Generated on <span class="mono">{{InvoiceDate}}</span> · Currency: <span class="mono">{{Currency}}</span></div>
-  <div>Page 1 / 1</div>
-</footer>
-<div class="no-print" style="margin-top:24px;text-align:center;color:var(--muted);">
-  <small>Print or save as PDF from your browser. Template placeholders include all invoice variables.</small>
-</div>
-</div>
+</article>
 </body>
 </html>
 
