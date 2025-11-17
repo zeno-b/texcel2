@@ -333,22 +333,50 @@
         text-align: left;
       }
     }
-    @media print {
-      :root { font-size: 13px; }
-      body { background: #fff; }
-      .page {
-        margin: 0;
-        padding: 0;
-        border-radius: 0;
-        box-shadow: none;
+      @media print {
+        :root { font-size: 15px; }
+        body {
+          margin: 0;
+          padding: 0;
+          background: var(--surface-muted);
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        .page {
+          width: 100%;
+          max-width: 100%;
+          margin: 0 auto;
+          padding: clamp(28px, 5vw, 56px);
+          border-radius: 16px;
+          border: 1px solid var(--line);
+          box-shadow: var(--shadow);
+          page-break-after: always;
+        }
+        .page:last-of-type {
+          page-break-after: auto;
+        }
+        header.hero,
+        section,
+        footer,
+        article,
+        .table-card,
+        .totals-card {
+          break-inside: avoid;
+          page-break-inside: avoid;
+          background: var(--surface);
+        }
+        table {
+          page-break-inside: auto;
+        }
+        thead {
+          display: table-header-group;
+        }
+        .no-print { display: none !important; }
+        @page {
+          size: A4;
+          margin: 0;
+        }
       }
-      header.hero, .card, .table-card, .totals-card {
-        box-shadow: none;
-        background: #fff;
-      }
-      .no-print { display: none !important; }
-      @page { size: A4; margin: 16mm; }
-    }
   </style>
 </head>
 <body>
