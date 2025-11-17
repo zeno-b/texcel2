@@ -54,6 +54,8 @@
         border: none;
         border-radius: 0;
         box-shadow: none;
+        position: relative;
+        z-index: 1;
       }
     .hero__brand {
       display: flex;
@@ -191,7 +193,15 @@
       padding: 20px 0;
       background: transparent;
     }
-    .card strong { font-weight: 600; }
+      .card strong { font-weight: 600; }
+      .details-card {
+        grid-column: 1 / -1;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        padding: 24px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
     .stack { display: grid; gap: 6px; font-size: 0.95rem; }
     .chip-group {
       display: flex;
@@ -295,11 +305,11 @@
         border-top: 1px solid var(--line);
         padding-top: 16px;
       }
-    .no-print {
-      text-align: center;
-      color: var(--ink-soft);
-      font-size: 0.8rem;
-    }
+      .no-print {
+        text-align: center;
+        color: var(--ink-soft);
+        font-size: 0.8rem;
+      }
       @media (max-width: 720px) {
         header.hero { grid-template-columns: 1fr; }
         .hero__brand { flex-direction: column; align-items: flex-start; }
@@ -307,6 +317,20 @@
         .page { border-radius: 0; margin: 0; padding: 24px 18px 42px; }
         .table-card header { padding: 18px; }
         th, td { padding: 12px; }
+      }
+      @media (min-width: 900px) {
+        .details-card {
+          grid-column: auto;
+          justify-self: end;
+          width: min(440px, 100%);
+          margin-left: auto;
+          margin-top: clamp(-150px, -12vw, -80px);
+          position: relative;
+          z-index: 2;
+        }
+        .grid {
+          margin-top: clamp(-16px, -2vw, 0px);
+        }
       }
     @media (max-width: 560px) {
       table thead { display: none; }
@@ -387,19 +411,25 @@
         break-inside: avoid;
         page-break-inside: avoid;
       }
-      .table-card header {
-        padding: 12px 0;
-      }
-      th,
-      td {
-        padding: 10px 12px;
-      }
-      .totals-card {
-        gap: 8px;
-      }
-      footer {
-        padding-top: 10px;
-      }
+        .table-card header {
+          padding: 12px 0;
+        }
+        th,
+        td {
+          padding: 10px 12px;
+        }
+        .details-card {
+          margin-top: 0;
+          width: 100%;
+          grid-column: 1 / -1;
+          box-shadow: none;
+        }
+        .totals-card {
+          gap: 8px;
+        }
+        footer {
+          padding-top: 10px;
+        }
       table {
         page-break-inside: auto;
       }
@@ -478,7 +508,7 @@
 
   <!-- Addresses/Details remain; "From" removed as requested -->
   <section class="grid" aria-label="invoice details">
-    <article class="card" style="grid-column: 1 / -1;">
+    <article class="card details-card">
       <div class="pill">Details</div>
       <div class="stack" style="margin-top:12px;">
         <span><strong>Resource:</strong> {{ResourceName}}</span>
