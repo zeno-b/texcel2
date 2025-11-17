@@ -87,6 +87,13 @@
       flex-direction: column;
       gap: 18px;
     }
+      .billto-card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+        background: #fff;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+      }
       .stat-card {
         padding: 18px 20px;
         border-radius: 12px;
@@ -356,6 +363,18 @@
     </div>
 
     <div class="hero__totals" aria-hidden="false">
+        <article class="billto-card" aria-label="Bill to">
+          <div class="pill">Bill to</div>
+          <div class="stack" style="margin-top:12px;">
+            <strong>{{ClientName}}</strong>
+            <span>{{ClientAddress}}</span>
+            <span>BTW {{ClientVAT}}</span>
+            <span>Contact {{ContactName}} · {{ContactEmail}}</span>
+            <span>PO {{PONumber}} · Ref {{AdditionalNumber}}</span>
+            <span>Contract {{ContractID}}</span>
+          </div>
+        </article>
+
       <div class="stat-card" role="status" aria-live="polite">
         <span>Totaal te betalen</span>
         <strong>{{Currency}} {{Total}}</strong>
@@ -365,18 +384,6 @@
       <!-- kept for spacing / future small stats (optional) -->
     </div>
 
-    <!-- Bill-To spanning full width of hero (user requested 'B' behaviour) -->
-    <article class="card" style="grid-column: 1 / -1;">
-      <div class="pill">Bill to</div>
-      <div class="stack" style="margin-top:12px;">
-        <strong>{{ClientName}}</strong>
-        <span>{{ClientAddress}}</span>
-        <span>BTW {{ClientVAT}}</span>
-        <span>Contact {{ContactName}} · {{ContactEmail}}</span>
-        <span>PO {{PONumber}} · Ref {{AdditionalNumber}}</span>
-        <span>Contract {{ContractID}}</span>
-      </div>
-    </article>
   </header>
 
   <!-- Addresses/Details remain; "From" removed as requested -->
