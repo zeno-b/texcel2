@@ -21,22 +21,33 @@
         --line: #f0d8c7;
         --shadow: 0 25px 60px rgba(210, 120, 60, 0.18);
       }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--surface-muted);
-      color: var(--ink);
-      font-family: var(--font-sans);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+      * { box-sizing: border-box; }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--surface-muted);
+        color: var(--ink);
+        font-family: var(--font-sans);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 12mm;
+      }
     h1,h2,h3,h4 { margin: 0; font-weight: 600; color: var(--ink); }
     h3 { font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
     p { margin: 0; }
-      .page {
-        max-width: 980px;
-        margin: clamp(12px, 4vw, 48px) auto;
-        padding: clamp(28px, 5vw, 56px);
+        .page {
+          width: 210mm;
+          max-width: 210mm;
+          min-height: 297mm;
+          margin: 0;
+          padding: 16mm 18mm 20mm;
         background: var(--surface);
         border-radius: 16px;
         border: 1px solid var(--line);
@@ -311,16 +322,10 @@
         border-top: 1px solid var(--line);
         padding-top: 16px;
       }
-      .no-print {
-        text-align: center;
-        color: var(--ink-soft);
-        font-size: 0.8rem;
-      }
-      @media (max-width: 720px) {
+        @media (max-width: 720px) {
         header.hero { grid-template-columns: 1fr; }
         .hero__brand { flex-direction: column; align-items: flex-start; }
         .logo { width: 60px; height: 60px; }
-        .page { border-radius: 0; margin: 0; padding: 24px 18px 42px; }
         .table-card header { padding: 18px; }
         th, td { padding: 12px; }
       }
@@ -364,60 +369,54 @@
         text-align: left;
       }
     }
-    @media print {
-      :root {
-        --print-scale: 0.88;
-        --print-page-width: 210mm;
-        --print-page-height: 297mm;
-        font-size: calc(15px * var(--print-scale));
-      }
-      * {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      html,
-      body {
-        width: var(--print-page-width);
-        min-height: var(--print-page-height);
-      }
-      body {
-        margin: 0;
-        padding: 0;
-        background: var(--surface);
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-      }
-      body > *:not(.page) {
-        display: none !important;
-      }
-      .page {
-        margin: 0 auto;
-        width: var(--print-page-width);
-        max-width: var(--print-page-width);
-        padding: 16mm 18mm 20mm;
-        gap: 24px;
-        box-sizing: border-box;
-        box-shadow: none;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: var(--surface);
-        page-break-before: avoid;
-        page-break-after: avoid;
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-      header.hero {
-        padding: 12mm 0 0;
-      }
-      section,
-      footer,
-      article,
-      .table-card,
-      .totals-card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
+      @media print {
+        :root {
+          --print-page-width: 210mm;
+          --print-page-height: 297mm;
+          font-size: 15px;
+        }
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        html,
+        body {
+          width: var(--print-page-width);
+          min-height: var(--print-page-height);
+        }
+        body {
+          margin: 0;
+          padding: 0;
+          background: var(--surface);
+          display: block;
+        }
+        .page {
+          width: var(--print-page-width);
+          max-width: var(--print-page-width);
+          min-height: var(--print-page-height);
+          margin: 0 auto;
+          padding: 16mm 18mm 20mm;
+          box-sizing: border-box;
+          box-shadow: none;
+          border: none;
+          border-radius: 0;
+          background: var(--surface);
+          page-break-before: avoid;
+          page-break-after: avoid;
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+        header.hero {
+          padding: 12mm 0 0;
+        }
+        section,
+        footer,
+        article,
+        .table-card,
+        .totals-card {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
         .table-card header {
           padding: 12px 0;
         }
@@ -437,18 +436,17 @@
         footer {
           padding-top: 10px;
         }
-      table {
-        page-break-inside: auto;
+        table {
+          page-break-inside: auto;
+        }
+        thead {
+          display: table-header-group;
+        }
+        @page {
+          size: A4;
+          margin: 0;
+        }
       }
-      thead {
-        display: table-header-group;
-      }
-      .no-print { display: none !important; }
-      @page {
-        size: A4;
-        margin: 0;
-      }
-    }
   </style>
 </head>
 <body>
@@ -620,9 +618,6 @@
     <div>Factuur {{InvoiceNumber}} · Pagina 1 van 1</div>
   </footer>
 
-  <div class="no-print">
-    Print of exporteer naar PDF vanuit uw browser voor een productieklare factuur.
-  </div>
 </article>
 </body>
 </html>
