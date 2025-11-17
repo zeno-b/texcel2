@@ -333,22 +333,61 @@
         text-align: left;
       }
     }
-    @media print {
-      :root { font-size: 13px; }
-      body { background: #fff; }
-      .page {
-        margin: 0;
-        padding: 0;
-        border-radius: 0;
-        box-shadow: none;
+      @media print {
+        :root {
+          font-size: 15px;
+          --print-scale: 0.82;
+        }
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        body {
+          margin: 0;
+          padding: 0;
+          background: var(--surface-muted);
+          display: flex;
+          justify-content: center;
+        }
+        body > *:not(.page) {
+          display: none !important;
+        }
+        .page {
+          margin: 0 auto;
+          max-width: 980px;
+          width: calc(100% / var(--print-scale));
+          transform-origin: top center;
+          transform: scale(var(--print-scale));
+          box-shadow: var(--shadow);
+          border: 1px solid var(--line);
+          border-radius: 16px;
+          background: var(--surface);
+          page-break-before: avoid;
+          page-break-after: avoid;
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+        header.hero,
+        section,
+        footer,
+        article,
+        .table-card,
+        .totals-card {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+        table {
+          page-break-inside: auto;
+        }
+        thead {
+          display: table-header-group;
+        }
+        .no-print { display: none !important; }
+        @page {
+          size: A4;
+          margin: 0;
+        }
       }
-      header.hero, .card, .table-card, .totals-card {
-        box-shadow: none;
-        background: #fff;
-      }
-      .no-print { display: none !important; }
-      @page { size: A4; margin: 16mm; }
-    }
   </style>
 </head>
 <body>
