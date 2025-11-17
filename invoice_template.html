@@ -334,50 +334,38 @@
       }
     }
       @media print {
-        :root { font-size: 13px; }
+        :root {
+          font-size: 15px;
+          --print-scale: 0.82;
+        }
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
         body {
           margin: 0;
           padding: 0;
-          background: #fff;
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-          zoom: 0.9;
+          background: var(--surface-muted);
+          display: flex;
+          justify-content: center;
         }
         body > *:not(.page) {
           display: none !important;
         }
         .page {
+          margin: 0 auto;
           max-width: 980px;
-          margin: 8mm auto;
-          padding: clamp(28px, 4vw, 48px);
-          border-radius: 16px;
-          border: 1px solid var(--line);
+          width: calc(100% / var(--print-scale));
+          transform-origin: top center;
+          transform: scale(var(--print-scale));
           box-shadow: var(--shadow);
+          border: 1px solid var(--line);
+          border-radius: 16px;
           background: var(--surface);
           page-break-before: avoid;
           page-break-after: avoid;
           page-break-inside: avoid;
           break-inside: avoid;
-        }
-        header.hero {
-          padding: 18px 0;
-          gap: 18px;
-        }
-        .grid,
-        .info-grid {
-          gap: 12px;
-        }
-        th,
-        td {
-          padding: 9px 12px;
-        }
-        .table-card header { padding: 18px 0; }
-        .totals-card {
-          margin-top: 12px;
-          gap: 8px;
-        }
-        .notes {
-          padding: 10px 0;
         }
         header.hero,
         section,
@@ -387,7 +375,6 @@
         .totals-card {
           break-inside: avoid;
           page-break-inside: avoid;
-          background: var(--surface);
         }
         table {
           page-break-inside: auto;
@@ -398,7 +385,7 @@
         .no-print { display: none !important; }
         @page {
           size: A4;
-          margin: 10mm;
+          margin: 0;
         }
       }
   </style>
