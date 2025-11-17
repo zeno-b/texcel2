@@ -364,52 +364,175 @@
         text-align: left;
       }
     }
-    /* --- PRINT OPTIMIZATIONS ADDED --- */
-@media print {
-/* Ensure everything fits on a single A4 */
-@page {
-size: A4;
-margin: 0;
-}
-html, body {
-width: 210mm;
-height: 297mm;
-margin: 0;
-padding: 0;
-}
-.page {
-padding: 10mm 12mm;
-box-sizing: border-box;
-max-height: 297mm;
-}
+      /* --- PRINT OPTIMIZATIONS UPDATED --- */
+      @media print {
+        @page {
+          size: A4 portrait;
+          margin: 8mm 10mm;
+        }
 
+        :root {
+          font-size: 13px;
+          --surface: #fff;
+          --surface-muted: #fff;
+          --shadow: none;
+        }
 
-/* BIG LOGO TOP LEFT */
-.logo {
-width: 80mm !important;
-}
+        html, body {
+          width: auto;
+          min-height: auto;
+          margin: 0;
+          padding: 0;
+          background: #fff !important;
+        }
 
+        body {
+          line-height: 1.4;
+          color: #222;
+        }
 
-/* MAKE "FACTUUR" BIG TOP RIGHT */
-.hero__flag {
-font-size: 42pt !important;
-}
+        body * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
 
+        .no-print {
+          display: none !important;
+        }
 
-/* Tighter spacing globally to avoid overflow */
-body * {
--webkit-print-color-adjust: exact !important;
-print-color-adjust: exact !important;
-}
-header.hero {
-padding-top: 0;
-margin-top: 0;
-grid-template-columns: 1fr auto !important;
-}
-.hero__brand {
-padding-right: 10mm;
-}
-}
+        .page {
+          margin: 0;
+          padding: 10mm 12mm;
+          width: auto;
+          max-width: none;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+          gap: 20px;
+        }
+
+        header.hero {
+          padding: 0;
+          margin: 0;
+          gap: 12px;
+          grid-template-columns: 1.4fr 1fr;
+          align-items: flex-start;
+        }
+
+        .hero__brand,
+        .hero__totals {
+          gap: 10px;
+        }
+
+        .hero__flag {
+          font-size: 2.4rem;
+          letter-spacing: 0.18em;
+          color: #000;
+        }
+
+        .logo {
+          max-width: 60mm;
+          min-height: auto;
+        }
+
+        .org-block,
+        .meta-list,
+        .stack,
+        .info-grid,
+        .grid {
+          gap: 6px;
+        }
+
+        .meta-list {
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .details-card,
+        .card,
+        .table-card,
+        .stat-card {
+          border-radius: 0;
+          box-shadow: none;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          background: transparent;
+        }
+
+        .card,
+        .details-card,
+        .billto-card,
+        .table-card,
+        .info-grid,
+        footer {
+          page-break-inside: avoid;
+        }
+
+        .grid {
+          margin-top: 0;
+        }
+
+        .details-card {
+          margin: 0;
+          padding: 16px;
+          max-width: none;
+          width: 100%;
+        }
+
+        .table-wrap {
+          overflow: visible;
+        }
+
+        table {
+          font-size: 0.85rem;
+        }
+
+        table thead {
+          display: table-header-group;
+          background: rgba(0, 0, 0, 0.04);
+        }
+
+        tbody tr,
+        thead tr {
+          page-break-inside: avoid;
+        }
+
+        th, td {
+          padding: 8px 10px;
+        }
+
+        .totals-card {
+          margin-top: 12px;
+          gap: 6px;
+        }
+
+        .totals-card .row span {
+          font-size: 0.72rem;
+        }
+
+        .totals-card .row strong {
+          font-size: 0.95rem;
+        }
+
+        .totals-card .grand strong {
+          font-size: 1.2rem;
+        }
+
+        .info-grid {
+          gap: 12px;
+        }
+
+        footer {
+          border-top: 1px solid rgba(0, 0, 0, 0.1);
+          padding-top: 8px;
+          font-size: 0.75rem;
+          color: #444;
+        }
+
+        .pill {
+          font-size: 0.65rem;
+          padding: 4px 8px;
+          letter-spacing: 0.18em;
+        }
+      }
   </style>
 </head>
 <body>
