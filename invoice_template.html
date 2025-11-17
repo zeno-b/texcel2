@@ -47,6 +47,7 @@
       }
       header.hero {
         padding: 28px;
+        padding-bottom: clamp(48px, 6vw, 80px);
         display: grid;
         gap: 24px;
         grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
@@ -187,12 +188,12 @@
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 20px;
     }
-    .card {
-      border: none;
-      border-radius: 0;
-      padding: 20px 0;
-      background: transparent;
-    }
+      .card {
+        border: none;
+        border-radius: 0;
+        padding: 20px 0;
+        background: transparent;
+      }
       .card strong { font-weight: 600; }
       .details-card {
         grid-column: 1 / -1;
@@ -201,6 +202,11 @@
         padding: 24px;
         background: var(--surface);
         box-shadow: var(--shadow);
+        max-width: 560px;
+        width: 100%;
+        margin-left: 0;
+        margin-right: auto;
+        align-self: flex-start;
       }
     .stack { display: grid; gap: 6px; font-size: 0.95rem; }
     .chip-group {
@@ -320,11 +326,12 @@
       }
       @media (min-width: 900px) {
         .details-card {
-          grid-column: auto;
-          justify-self: end;
-          width: min(440px, 100%);
-          margin-left: auto;
-          margin-top: clamp(-150px, -12vw, -80px);
+          grid-column: 1 / span 1;
+          justify-self: start;
+          width: min(520px, 100%);
+          margin-left: 0;
+          margin-right: auto;
+          margin-top: clamp(-130px, -10vw, -70px);
           position: relative;
           z-index: 2;
         }
