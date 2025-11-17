@@ -552,15 +552,7 @@ padding-right: 10mm;
             <td class="right mono" data-label="Bedrag">{{Currency}} {{BaseLineTotal}}</td>
           </tr>
 
-          {{#each ExtrasRows}}
-          <tr>
-            <td data-label="Omschrijving">{{description}}</td>
-            <td class="right mono" data-label="Hoeveelheid">{{quantity}}</td>
-            <td class="right mono" data-label="Tarief">{{Currency}} {{unit_price}}</td>
-            <td class="right mono" data-label="BTW">{{vat}}</td>
-            <td class="right mono" data-label="Bedrag">{{Currency}} {{line_total}}</td>
-          </tr>
-          {{/each}}
+          {{ExtrasRows}}
         </tbody>
       </table>
     </div>
@@ -616,4 +608,5 @@ padding-right: 10mm;
 </article>
 </body>
 </html>
+
 
