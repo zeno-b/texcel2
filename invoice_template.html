@@ -401,6 +401,35 @@ body * {
 -webkit-print-color-adjust: exact !important;
 print-color-adjust: exact !important;
 }
+  /* prevent components from splitting across pages */
+  .page,
+  header,
+  section,
+  footer,
+  .card,
+  .details-card,
+  .table-card,
+  .totals-card,
+  .info-grid article,
+  .stat-card,
+  .billto-card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  }
+  .table-card table {
+  width: 100%;
+  border-collapse: collapse;
+  }
+  .table-card thead {
+  display: table-header-group;
+  }
+  .table-card tfoot {
+  display: table-footer-group;
+  }
+  .table-card tbody tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  }
 header.hero {
 padding-top: 0;
 margin-top: 0;
