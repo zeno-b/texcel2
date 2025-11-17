@@ -334,30 +334,50 @@
       }
     }
       @media print {
-        :root { font-size: 14px; }
-        html, body {
-          width: 210mm;
-          min-height: 297mm;
-        }
+        :root { font-size: 13px; }
         body {
           margin: 0;
           padding: 0;
-          background: var(--surface-muted);
+          background: #fff;
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
+          zoom: 0.9;
+        }
+        body > *:not(.page) {
+          display: none !important;
         }
         .page {
-          width: calc(210mm - 32mm);
-          min-height: calc(297mm - 32mm);
-          max-width: none;
-          margin: 16mm auto;
-          padding: 18mm;
+          max-width: 980px;
+          margin: 8mm auto;
+          padding: clamp(28px, 4vw, 48px);
           border-radius: 16px;
           border: 1px solid var(--line);
           box-shadow: var(--shadow);
-          break-after: avoid;
-          break-before: avoid;
-          overflow: hidden;
+          background: var(--surface);
+          page-break-before: avoid;
+          page-break-after: avoid;
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+        header.hero {
+          padding: 18px 0;
+          gap: 18px;
+        }
+        .grid,
+        .info-grid {
+          gap: 12px;
+        }
+        th,
+        td {
+          padding: 9px 12px;
+        }
+        .table-card header { padding: 18px 0; }
+        .totals-card {
+          margin-top: 12px;
+          gap: 8px;
+        }
+        .notes {
+          padding: 10px 0;
         }
         header.hero,
         section,
@@ -378,7 +398,7 @@
         .no-print { display: none !important; }
         @page {
           size: A4;
-          margin: 0;
+          margin: 10mm;
         }
       }
   </style>
