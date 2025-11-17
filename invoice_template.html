@@ -334,7 +334,11 @@
       }
     }
       @media print {
-        :root { font-size: 15px; }
+        :root { font-size: 14px; }
+        html, body {
+          width: 210mm;
+          min-height: 297mm;
+        }
         body {
           margin: 0;
           padding: 0;
@@ -343,17 +347,17 @@
           print-color-adjust: exact;
         }
         .page {
-          width: 100%;
-          max-width: 100%;
-          margin: 0 auto;
-          padding: clamp(28px, 5vw, 56px);
+          width: calc(210mm - 32mm);
+          min-height: calc(297mm - 32mm);
+          max-width: none;
+          margin: 16mm auto;
+          padding: 18mm;
           border-radius: 16px;
           border: 1px solid var(--line);
           box-shadow: var(--shadow);
-          page-break-after: always;
-        }
-        .page:last-of-type {
-          page-break-after: auto;
+          break-after: avoid;
+          break-before: avoid;
+          overflow: hidden;
         }
         header.hero,
         section,
