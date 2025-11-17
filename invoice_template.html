@@ -364,91 +364,52 @@
         text-align: left;
       }
     }
-    @media print {
-      :root {
-        --print-scale: 0.88;
-        --print-page-width: 210mm;
-        --print-page-height: 297mm;
-        font-size: calc(15px * var(--print-scale));
-      }
-      * {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      html,
-      body {
-        width: var(--print-page-width);
-        min-height: var(--print-page-height);
-      }
-      body {
-        margin: 0;
-        padding: 0;
-        background: var(--surface);
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-      }
-      body > *:not(.page) {
-        display: none !important;
-      }
-      .page {
-        margin: 0 auto;
-        width: var(--print-page-width);
-        max-width: var(--print-page-width);
-        padding: 16mm 18mm 20mm;
-        gap: 24px;
-        box-sizing: border-box;
-        box-shadow: none;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: var(--surface);
-        page-break-before: avoid;
-        page-break-after: avoid;
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-      header.hero {
-        padding: 12mm 0 0;
-      }
-      section,
-      footer,
-      article,
-      .table-card,
-      .totals-card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-        .table-card header {
-          padding: 12px 0;
-        }
-        th,
-        td {
-          padding: 10px 12px;
-        }
-        .details-card {
-          margin-top: 0;
-          width: 100%;
-          grid-column: 1 / -1;
-          box-shadow: none;
-        }
-        .totals-card {
-          gap: 8px;
-        }
-        footer {
-          padding-top: 10px;
-        }
-      table {
-        page-break-inside: auto;
-      }
-      thead {
-        display: table-header-group;
-      }
-      .no-print { display: none !important; }
-      @page {
-        size: A4;
-        margin: 0;
-      }
-    }
+    /* --- PRINT OPTIMIZATIONS ADDED --- */
+@media print {
+/* Ensure everything fits on a single A4 */
+@page {
+size: A4;
+margin: 0;
+}
+html, body {
+width: 210mm;
+height: 297mm;
+margin: 0;
+padding: 0;
+}
+.page {
+padding: 10mm 12mm;
+box-sizing: border-box;
+max-height: 297mm;
+}
+
+
+/* BIG LOGO TOP LEFT */
+.logo {
+width: 80mm !important;
+}
+
+
+/* MAKE "FACTUUR" BIG TOP RIGHT */
+.hero__flag {
+font-size: 42pt !important;
+}
+
+
+/* Tighter spacing globally to avoid overflow */
+body * {
+-webkit-print-color-adjust: exact !important;
+print-color-adjust: exact !important;
+}
+header.hero {
+padding-top: 0;
+margin-top: 0;
+grid-template-columns: 1fr auto !important;
+}
+.hero__brand {
+padding-right: 10mm;
+}
+}
   </style>
 </head>
 <body>
@@ -626,5 +587,4 @@
 </article>
 </body>
 </html>
-
 
