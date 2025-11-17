@@ -408,7 +408,10 @@
           break-inside: avoid;
         }
       header.hero {
-        padding: 12mm 0 0;
+          padding: 12mm 0 0;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
       }
         section,
       footer,
@@ -421,6 +424,20 @@
         .grid,
         .info-grid {
           gap: 12px;
+        }
+        .hero__totals {
+          order: -1;
+          align-items: flex-start;
+          width: 100%;
+          margin-bottom: 4mm;
+        }
+        .hero__flag {
+          text-align: left;
+        }
+        .logo {
+          width: auto;
+          max-width: 220px;
+          min-height: unset;
         }
         .card,
         .billto-card,
