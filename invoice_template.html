@@ -391,26 +391,26 @@
       body > *:not(.page) {
         display: none !important;
       }
-      .page {
-        margin: 0 auto;
-        width: var(--print-page-width);
-        max-width: var(--print-page-width);
-        padding: 16mm 18mm 20mm;
-        gap: 24px;
-        box-sizing: border-box;
-        box-shadow: none;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: var(--surface);
-        page-break-before: avoid;
-        page-break-after: avoid;
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
+        .page {
+          margin: 0 auto;
+          width: var(--print-page-width);
+          max-width: var(--print-page-width);
+          padding: 16mm 18mm 20mm;
+          gap: 16px;
+          box-sizing: border-box;
+          box-shadow: none;
+          border: 1px solid var(--line);
+          border-radius: 14px;
+          background: var(--surface);
+          page-break-before: avoid;
+          page-break-after: avoid;
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
       header.hero {
         padding: 12mm 0 0;
       }
-      section,
+        section,
       footer,
       article,
       .table-card,
@@ -418,6 +418,19 @@
         break-inside: avoid;
         page-break-inside: avoid;
       }
+        .grid,
+        .info-grid {
+          gap: 12px;
+        }
+        .card,
+        .billto-card,
+        .stat-card,
+        .details-card,
+        .totals-card,
+        .notes {
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
         .table-card header {
           padding: 12px 0;
         }
