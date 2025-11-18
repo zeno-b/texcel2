@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Factuur {{InvoiceNumber}} · Corporate Blue</title>
+  <style>
+    :root {
+      font-size: 15px;
+      color-scheme: light;
+      --font-sans: "PT Sans", "Segoe UI", system-ui, sans-serif;
+      --font-mono: "Roboto Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      --ink: #102037;
+      --ink-soft: #5a6a86;
+      --surface: #ffffff;
+      --surface-muted: #eef2f8;
+      --line: #d5ddea;
+      --brand: #0c6ff9;
+      --brand-dark: #0846a4;
+      --brand-light: #ccddfb;
+      --shadow: 0 20px 50px rgba(14, 32, 75, 0.15);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--surface-muted);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: clamp(18px, 4vw, 48px) auto;
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: clamp(28px, 5vw, 52px);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    header.hero {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 24px;
+    }
+
+    .hero__brand { flex: 1 1 320px; }
+    .hero__totals { flex: 0 0 260px; display: flex; flex-direction: column; gap: 16px; }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand);
+    }
+
+    .logo::before {
+      content: "";
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(160deg, var(--brand), #40a9ff);
+    }
+
+    .org-name {
+      font-size: clamp(1.4rem, 2.3vw, 2.1rem);
+      font-weight: 700;
+      margin-top: 10px;
+      color: var(--ink);
+    }
+
+    .subtle { color: var(--ink-soft); margin: 6px 0 0; }
+
+    .meta-list {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px 18px;
+    }
+
+    .meta-list dt {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .meta-list dd {
+      margin: 2px 0 0;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .hero__flag {
+      font-size: 0.78rem;
+      letter-spacing: 0.48em;
+      text-transform: uppercase;
+      color: var(--brand-dark);
+    }
+
+    .billto-card, .stat-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      background: #f8fbff;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--brand);
+    }
+
+    .stat-card span {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .stat-card strong {
+      font-size: 1.9rem;
+      font-family: var(--font-mono);
+      margin-top: 6px;
+      color: var(--brand-dark);
+    }
+
+    section.grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .details-card {
+      grid-column: 1 / -1;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px;
+      background: #fff;
+    }
+
+    .table-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .table-card header {
+      padding: 20px 26px;
+      background: var(--brand);
+      color: #fff;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+
+    th, td {
+      padding: 14px 20px;
+      border-bottom: 1px solid #edf2ff;
+    }
+
+    thead th {
+      background: #f6f8ff;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+    }
+
+    td.right, th.right { text-align: right; }
+    td.mono { font-family: var(--font-mono); }
+
+    .totals-card {
+      padding: 20px 26px 28px;
+      background: #031634;
+      color: #fff;
+      display: grid;
+      gap: 10px;
+    }
+
+    .totals-card .row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+    }
+
+    .totals-card span {
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .totals-card strong {
+      font-family: var(--font-mono);
+    }
+
+    .totals-card .grand strong {
+      font-size: 1.4rem;
+      color: var(--accent);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .info-grid article {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      background: #fff;
+    }
+
+    .notes { margin-top: 12px; color: var(--ink-soft); font-size: 0.9rem; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.84rem;
+      color: var(--ink-soft);
+    }
+
+    .no-print { text-align: center; font-size: 0.78rem; color: var(--ink-soft); }
+
+    @media (max-width: 640px) {
+      header.hero { flex-direction: column; }
+    }
+
+    @media (max-width: 560px) {
+      table thead { display: none; }
+      table tbody tr {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 14px 18px;
+      }
+      table tbody td {
+        border: none;
+        padding: 0;
+      }
+      table tbody td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 2px;
+      }
+      table tbody td.right { text-align: left; }
+    }
+
+    @media print {
+      @page { size: A4; margin: 8mm; }
+      body { background: #fff; }
+      .page { box-shadow: none; border-radius: 0; }
+      body * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      header, section, footer, article { break-inside: avoid; page-break-inside: avoid; }
+      .table-card thead { display: table-header-group; }
+      .table-card tfoot { display: table-footer-group; }
+    }
+  </style>
+</head>
+<body>
+<article class="page">
+  <header class="hero" aria-label="Corporate hero">
+    <div class="hero__brand">
+      <div class="logo">{{CompanyName}}</div>
+      <div class="org-name">{{CompanyName}}</div>
+      <p class="subtle">{{CompanyAddress}} · BTW {{CompanyVAT}} · {{CompanyEmail}} · {{CompanyPhone}}</p>
+      <dl class="meta-list">
+        <div>
+          <dt>Factuurnummer</dt>
+          <dd>{{InvoiceNumber}}</dd>
+        </div>
+        <div>
+          <dt>Datum</dt>
+          <dd>{{InvoiceDate}}</dd>
+        </div>
+        <div>
+          <dt>Vervaldatum</dt>
+          <dd>{{DueDate}}</dd>
+        </div>
+        <div>
+          <dt>Valuta</dt>
+          <dd>{{Currency}}</dd>
+        </div>
+      </dl>
+    </div>
+    <div class="hero__totals">
+      <div class="hero__flag">FACTUUR</div>
+      <article class="billto-card" aria-label="Bill to">
+        <div class="pill">Bill to</div>
+        <div class="stack" style="margin-top:10px;">
+          <strong>{{ClientName}}</strong>
+          <span>{{ClientAddress}}</span>
+          <span>BTW {{ClientVAT}}</span>
+          <span>Contact {{ContactName}} · {{ContactEmail}}</span>
+          <span>PO {{PONumber}} · Ref {{AdditionalNumber}}</span>
+          <span>Contract {{ContractID}}</span>
+        </div>
+      </article>
+      <article class="stat-card">
+        <span>Totaal te betalen</span>
+        <strong>{{Currency}} {{Total}}</strong>
+        <small>Te betalen vóór {{DueDate}} · {{PaymentTerms}} dagen</small>
+      </article>
+    </div>
+  </header>
+
+  <section class="grid" aria-label="Details">
+    <article class="details-card">
+      <div class="pill">Details</div>
+      <div class="stack" style="margin-top:12px;">
+        <span><strong>Resource:</strong> {{ResourceName}}</span>
+        <span><strong>End-Customer name:</strong> {{EndCustomer}}</span>
+        <span><strong>Mission:</strong> {{Mission}}</span>
+        <span><strong>Period:</strong> van {{PeriodStart}} tot {{PeriodEnd}}</span>
+        <span><strong>Reference:</strong> {{Reference}}</span>
+        <span><strong>Cost center:</strong> {{CostCenter}}</span>
+      </div>
+    </article>
+  </section>
+
+  <section class="table-card" aria-labelledby="invoice-lines">
+    <header>
+      <div class="pill" id="invoice-lines">Invoice lines</div>
+      <p>{{ConsultantName}} · Periode {{PeriodStart}} – {{PeriodEnd}}</p>
+    </header>
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:38%" />
+          <col style="width:12%" />
+          <col style="width:20%" />
+          <col style="width:10%" />
+          <col style="width:20%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Omschrijving</th>
+            <th class="right">Hoeveelheid</th>
+            <th class="right">Tarief ({{Currency}})</th>
+            <th class="right">BTW %</th>
+            <th class="right">Bedrag ({{Currency}})</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Omschrijving">{{ConsultantName}} — {{Mission}}</td>
+            <td class="right mono" data-label="Hoeveelheid">{{BaseQuantity}} {{RateUnit}}</td>
+            <td class="right mono" data-label="Tarief">{{Currency}} {{ChargeRate}} / {{RateUnit}}</td>
+            <td class="right mono" data-label="BTW">{{VATRate}}</td>
+            <td class="right mono" data-label="Bedrag">{{Currency}} {{BaseLineTotal}}</td>
+          </tr>
+          {{ExtrasRows}}
+        </tbody>
+      </table>
+    </div>
+    <div class="totals-card">
+      <div class="row">
+        <span>Subtotaal</span>
+        <strong>{{Currency}} {{Subtotal}}</strong>
+      </div>
+      <div class="row">
+        <span>Totaal BTW</span>
+        <strong>{{Currency}} {{VATAmount}}</strong>
+      </div>
+      <div class="row grand">
+        <span>Totaal te betalen vóór {{DueDate}}</span>
+        <strong>{{Currency}} {{Total}}</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-grid" aria-label="Payment & notes">
+    <article>
+      <div class="pill">Betalingsinformatie</div>
+      <div class="stack" style="margin-top:12px;">
+        <span><strong>IBAN</strong> · <span class="mono">{{BankIBAN}}</span></span>
+        <span><strong>BIC</strong> · <span class="mono">{{BankBIC}}</span></span>
+        <span><strong>Mededeling / Ref</strong> · <span class="mono">{{StructuredReference}}</span></span>
+        <span><strong>Banknaam</strong> · {{BankName}}</span>
+        <span><strong>Betalen aan</strong> · {{CompanyName}}</span>
+      </div>
+    </article>
+    <article>
+      <div class="pill">Opmerkingen & voorwaarden</div>
+      <div class="notes">
+        <p>{{Notes}}</p>
+        <p>{{ReverseChargeNote}}</p>
+      </div>
+    </article>
+  </section>
+
+  <footer>
+    <span>Gegenereerd {{InvoiceDate}} · Valuta {{Currency}}</span>
+    <span>Factuur {{InvoiceNumber}} · Pagina 1 van 1</span>
+  </footer>
+  <div class="no-print">Download of print deze factuur vanuit uw browser.</div>
+</article>
+</body>
+</html>
