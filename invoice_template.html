@@ -42,7 +42,7 @@
       margin: clamp(12px, 4vw, 48px) auto;
       padding: clamp(26px, 4vw, 52px);
       background: var(--surface);
-      border-radius: 14px;
+      border-radius: 0;
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
       display: flex;
@@ -123,7 +123,7 @@
       gap: 16px;
       align-items: stretch;
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 0;
       padding: 18px 18px 16px;
       background: var(--surface);
     }
@@ -145,7 +145,7 @@
       text-transform: uppercase;
       letter-spacing: 0.18em;
       padding: 6px 12px;
-      border-radius: 999px;
+      border-radius: 0;
       border: 1px solid var(--line-strong);
       background: transparent;
       color: var(--ink);
@@ -196,14 +196,14 @@
 
     .details-card {
       grid-column: 1 / -1;
-      border-radius: 14px;
+      border-radius: 0;
       border: 1px solid var(--line);
       padding: 18px;
       background: var(--surface);
     }
 
     .table-card {
-      border-radius: 14px;
+      border-radius: 0;
       border: 1px solid var(--line);
       overflow: hidden;
       background: var(--surface);
@@ -340,13 +340,22 @@
     }
 
     @media print {
-      @page { size: A4; margin: 10mm; }
-
-      :root {
-        font-size: 13px;
+      @page { 
+        size: A4; 
+        margin: 8mm; 
       }
 
-      body { background: #fff; color: #000; }
+      :root {
+        font-size: 11px;
+      }
+
+      body { 
+        background: #fff; 
+        color: #000; 
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      
       .page {
         margin: 0;
         padding: 0;
@@ -354,7 +363,9 @@
         border-radius: 0;
         box-shadow: none;
         max-width: none;
-        gap: 18px;
+        gap: 12px;
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
 
       /* Reduce ink usage and ensure crisp output */
@@ -370,115 +381,155 @@
 
       /* Compact header for print */
       header.hero {
-        gap: 16px;
+        gap: 10px;
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
 
       .hero__brand {
-        gap: 10px;
+        gap: 6px;
       }
 
       .logo {
-        max-width: 200px;
-        min-height: 40px;
+        max-width: 160px;
+        min-height: 32px;
       }
 
       .org-name {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
       }
 
       .meta-list {
-        margin-top: 8px;
-        gap: 8px 12px;
+        margin-top: 6px;
+        gap: 6px 10px;
       }
 
       .hero__totals {
-        gap: 12px;
-        padding: 14px;
+        gap: 8px;
+        padding: 10px;
+        border-radius: 0;
       }
 
       .hero__flag {
-        font-size: 2rem;
+        font-size: 1.6rem;
       }
 
       .billto-card, .stat-card {
-        padding-top: 10px;
+        padding-top: 8px;
       }
 
       .stat-card strong {
-        font-size: 1.35rem;
+        font-size: 1.2rem;
       }
 
       /* Compact sections */
       .grid {
-        gap: 14px;
+        gap: 10px;
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
 
       .details-card {
-        padding: 14px;
+        padding: 10px;
+        border-radius: 0;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .table-card {
+        border-radius: 0;
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
 
       .table-card header {
-        padding: 12px 14px;
+        padding: 8px 10px;
       }
 
       /* Compact table */
       table {
-        font-size: 0.88rem;
+        font-size: 0.82rem;
       }
 
       th, td {
-        padding: 9px 14px;
+        padding: 6px 10px;
       }
 
       thead th {
-        font-size: 0.68rem;
+        font-size: 0.62rem;
       }
 
       /* Compact totals */
       .totals-card {
-        margin-top: 10px;
-        padding: 0 14px 14px;
-        gap: 8px;
+        margin-top: 8px;
+        padding: 0 10px 10px;
+        gap: 6px;
       }
 
       .totals-card .row span {
-        font-size: 0.7rem;
+        font-size: 0.66rem;
       }
 
       .totals-card .row strong {
-        font-size: 0.92rem;
+        font-size: 0.86rem;
       }
 
       .totals-card .grand strong {
-        font-size: 1.15rem;
+        font-size: 1.05rem;
       }
 
       .totals-card .grand {
-        padding-top: 8px;
+        padding-top: 6px;
       }
 
       /* Compact info grid */
       .info-grid {
-        gap: 14px;
+        gap: 10px;
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
 
       .notes {
-        margin-top: 8px;
-        font-size: 0.88rem;
+        margin-top: 6px;
+        font-size: 0.82rem;
       }
 
       /* Compact footer */
       footer {
-        padding-top: 10px;
-        font-size: 0.76rem;
+        padding-top: 8px;
+        font-size: 0.72rem;
+      }
+      
+      .pill {
+        border-radius: 0;
+        font-size: 0.68rem;
+        padding: 4px 10px;
+      }
+      
+      .stack {
+        gap: 4px !important;
       }
 
       /* Keep sections together where possible */
-      header, footer, .details-card, .stat-card, .table-card {
+      header, footer, .details-card, .stat-card, .table-card, .info-grid, .card {
         break-inside: avoid;
         page-break-inside: avoid;
       }
-      tbody tr { break-inside: avoid; page-break-inside: avoid; }
+      
+      tbody tr { 
+        break-inside: avoid; 
+        page-break-inside: avoid; 
+      }
+      
+      /* Ensure all content fits */
+      * {
+        page-break-inside: avoid !important;
+      }
+      
+      article.page {
+        height: auto !important;
+        max-height: none !important;
+      }
     }
   </style>
 </head>
