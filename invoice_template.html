@@ -195,7 +195,6 @@
     .card strong { font-weight: 650; }
 
     .details-card {
-      grid-column: 1 / -1;
       border-radius: 0;
       border: 1px solid var(--line);
       padding: 18px;
@@ -363,7 +362,7 @@
         border-radius: 0;
         box-shadow: none;
         max-width: none;
-        gap: 12px;
+        gap: 8px;
         page-break-inside: avoid;
         break-inside: avoid;
       }
@@ -381,56 +380,56 @@
 
       /* Compact header for print */
       header.hero {
-        gap: 10px;
+        gap: 8px;
         page-break-inside: avoid;
         break-inside: avoid;
       }
 
       .hero__brand {
-        gap: 6px;
+        gap: 4px;
       }
 
       .logo {
-        max-width: 160px;
-        min-height: 32px;
+        max-width: 140px;
+        min-height: 28px;
       }
 
       .org-name {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
       }
 
       .meta-list {
-        margin-top: 6px;
-        gap: 6px 10px;
+        margin-top: 4px;
+        gap: 4px 8px;
       }
 
       .hero__totals {
-        gap: 8px;
-        padding: 10px;
+        gap: 6px;
+        padding: 8px;
         border-radius: 0;
       }
 
       .hero__flag {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
       }
 
       .billto-card, .stat-card {
-        padding-top: 8px;
+        padding-top: 6px;
       }
 
       .stat-card strong {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
       }
 
       /* Compact sections */
       .grid {
-        gap: 10px;
+        gap: 8px;
         page-break-inside: avoid;
         break-inside: avoid;
       }
 
       .details-card {
-        padding: 10px;
+        padding: 8px;
         border-radius: 0;
         page-break-inside: avoid;
         break-inside: avoid;
@@ -443,71 +442,71 @@
       }
 
       .table-card header {
-        padding: 8px 10px;
+        padding: 6px 8px;
       }
 
       /* Compact table */
       table {
-        font-size: 0.82rem;
+        font-size: 0.8rem;
       }
 
       th, td {
-        padding: 6px 10px;
+        padding: 5px 8px;
       }
 
       thead th {
-        font-size: 0.62rem;
+        font-size: 0.6rem;
       }
 
       /* Compact totals */
       .totals-card {
-        margin-top: 8px;
-        padding: 0 10px 10px;
-        gap: 6px;
+        margin-top: 6px;
+        padding: 0 8px 8px;
+        gap: 5px;
       }
 
       .totals-card .row span {
-        font-size: 0.66rem;
+        font-size: 0.64rem;
       }
 
       .totals-card .row strong {
-        font-size: 0.86rem;
+        font-size: 0.84rem;
       }
 
       .totals-card .grand strong {
-        font-size: 1.05rem;
+        font-size: 1.0rem;
       }
 
       .totals-card .grand {
-        padding-top: 6px;
+        padding-top: 5px;
       }
 
       /* Compact info grid */
       .info-grid {
-        gap: 10px;
+        gap: 8px;
         page-break-inside: avoid;
         break-inside: avoid;
       }
 
       .notes {
-        margin-top: 6px;
-        font-size: 0.82rem;
+        margin-top: 4px;
+        font-size: 0.8rem;
       }
 
       /* Compact footer */
       footer {
-        padding-top: 8px;
-        font-size: 0.72rem;
+        padding-top: 6px;
+        font-size: 0.7rem;
       }
       
       .pill {
         border-radius: 0;
-        font-size: 0.68rem;
-        padding: 4px 10px;
+        font-size: 0.66rem;
+        padding: 3px 8px;
       }
       
       .stack {
-        gap: 4px !important;
+        gap: 3px !important;
       }
 
       /* Keep sections together where possible */
@@ -595,8 +594,8 @@
 
   </header>
 
-  <!-- Addresses/Details remain; "From" removed as requested -->
-  <section class="grid" aria-label="invoice details">
+  <!-- Combined grid: Details, Payment Info, Notes side-by-side -->
+  <section class="grid" aria-label="invoice details and payment">
     <article class="card details-card">
       <div class="pill">Details</div>
       <div class="stack" style="margin-top:12px;">
@@ -606,6 +605,25 @@
         <span><strong>Period:</strong> van {{PeriodStart}} tot {{PeriodEnd}}</span>
         <span><strong>Reference:</strong> {{Reference}}</span>
         <span><strong>Cost center:</strong> {{CostCenter}}</span>
+      </div>
+    </article>
+
+    <article class="card details-card">
+      <div class="pill">Betalingsinformatie</div>
+      <div class="stack" style="margin-top:12px;">
+        <span><strong>IBAN</strong> · <span class="mono">{{BankIBAN}}</span></span>
+        <span><strong>BIC</strong> · <span class="mono">{{BankBIC}}</span></span>
+        <span><strong>Mededeling / Ref</strong> · <span class="mono">{{StructuredReference}}</span></span>
+        <span><strong>Banknaam</strong> · {{BankName}}</span>
+        <span><strong>Betalen aan</strong> · {{CompanyName}}</span>
+      </div>
+    </article>
+
+    <article class="card details-card">
+      <div class="pill">Opmerkingen & voorwaarden</div>
+      <div class="notes">
+        <p>{{Notes}}</p>
+        <p>{{ReverseChargeNote}}</p>
       </div>
     </article>
   </section>
@@ -666,27 +684,6 @@
     </div>
   </section>
 
-  <!-- Payment details + Notes -->
-  <section class="info-grid" aria-label="payment and notes">
-    <article class="card">
-      <div class="pill">Betalingsinformatie</div>
-      <div class="stack" style="margin-top:12px;">
-        <span><strong>IBAN</strong> · <span class="mono">{{BankIBAN}}</span></span>
-        <span><strong>BIC</strong> · <span class="mono">{{BankBIC}}</span></span>
-        <span><strong>Mededeling / Ref</strong> · <span class="mono">{{StructuredReference}}</span></span>
-        <span><strong>Banknaam</strong> · {{BankName}}</span>
-        <span><strong>Betalen aan</strong> · {{CompanyName}}</span>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="pill">Opmerkingen & voorwaarden</div>
-      <div class="notes">
-        <p>{{Notes}}</p>
-        <p>{{ReverseChargeNote}}</p>
-      </div>
-    </article>
-  </section>
 
   <!-- Footer -->
   <footer>
