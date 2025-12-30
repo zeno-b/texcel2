@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Print Preview Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .info-box {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .info-box h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    .info-box ul {
+      line-height: 1.8;
+    }
+    .info-box code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    .success {
+      border-left: 4px solid #4caf50;
+    }
+    .button {
+      display: inline-block;
+      background: #2196F3;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin: 10px 0;
+    }
+    .button:hover {
+      background: #1976D2;
+    }
+  </style>
+</head>
+<body>
+  <h1>✅ Print Layout Improvements Complete</h1>
+  
+  <div class="info-box success">
+    <h2>🎯 What Was Fixed</h2>
+    <ul>
+      <li><strong>Single Page Layout:</strong> Everything now fits on one A4 page when printing</li>
+      <li><strong>Extra Rows Position:</strong> Extra invoice rows appear in the table tbody, above the subtotal section</li>
+      <li><strong>Aesthetic Sizing:</strong> All elements are proportionally scaled for optimal readability and professional appearance</li>
+    </ul>
+  </div>
+
+  <div class="info-box">
+    <h2>📐 Print Optimizations Applied</h2>
+    <ul>
+      <li>Page margins: 10mm (reduced from 12mm)</li>
+      <li>Base font size: 13px (reduced from 15px)</li>
+      <li>Header section: ~25% more compact</li>
+      <li>Table cells: ~25% smaller padding</li>
+      <li>Totals section: ~30% more compact</li>
+      <li>Footer: ~15% smaller font</li>
+      <li>All gaps and spacing reduced proportionally</li>
+    </ul>
+  </div>
+
+  <div class="info-box">
+    <h2>🔍 Structure Verification</h2>
+    <p>The invoice structure is correctly set up:</p>
+    <pre style="background: #f9f9f9; padding: 15px; border-radius: 4px; overflow-x: auto;">
+&lt;table&gt;
+  &lt;thead&gt;...headers...&lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;...base invoice row...&lt;/tr&gt;
+    
+    <strong>{{ExtrasRows}}</strong>  ← Additional rows inserted here
+    
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class="totals-card"&gt;
+  &lt;!-- Subtotal, VAT, Total appear here --&gt;
+&lt;/div&gt;</pre>
+  </div>
+
+  <div class="info-box">
+    <h2>🧪 How to Test</h2>
+    <ol style="line-height: 2;">
+      <li>Open <code>invoice_template.html</code> in your browser</li>
+      <li>Press <code>Ctrl+P</code> (Windows/Linux) or <code>Cmd+P</code> (Mac)</li>
+      <li>Select "Save as PDF" or preview with your printer</li>
+      <li>Verify that everything fits on one page</li>
+      <li>Check that spacing looks professional and readable</li>
+    </ol>
+  </div>
+
+  <div class="info-box">
+    <h2>📄 Files Modified</h2>
+    <ul>
+      <li><code>invoice_template.html</code> - Updated print media query with optimized sizing</li>
+      <li><code>PRINT_IMPROVEMENTS.md</code> - Documentation of all changes</li>
+    </ul>
+  </div>
+
+  <a href="invoice_template.html" class="button">📄 View Invoice Template</a>
+  <a href="PRINT_IMPROVEMENTS.md" class="button">📋 View Documentation</a>
+
+  <p style="margin-top: 40px; color: #666; font-size: 14px;">
+    <em>Note: The print optimizations only apply when printing or exporting to PDF. 
+    The on-screen layout remains unchanged for better viewing experience.</em>
+  </p>
+</body>
+</html>
