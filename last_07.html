@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invoice {{InvoiceNumber}} · last_07</title>
+  <style>
+
+:root{
+  color-scheme: light;
+  --font-sans: "Inter", "Aptos", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --ink:#111;
+  --ink-soft:#4b5563;
+  --ink-subtle:#6b7280;
+  --paper:#fff;
+  --page-bg:#f5f5f5;
+  --rule:#111;
+  --rule-soft:#e5e7eb;
+  --chip:#f3f4f6;
+  --accent:#0f172a;
+
+  --page-padding: 12mm;
+  --page-border: 1px solid #111;
+  --radius: 0px;
+  --shadow: 0 18px 40px rgba(0,0,0,.08);
+
+  --text: 12px;
+  --text-lg: 14px;
+  --h1: 22px;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  background: var(--page-bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height:1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet{
+  width: 210mm;
+  min-height: 297mm;
+  margin: 18px auto;
+  background: var(--paper);
+  border: var(--page-border);
+  padding: var(--page-padding);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display:flex;
+  flex-direction:column;
+  gap: 8mm;
+}
+
+.top{
+  display:grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 10mm;
+  align-items:start;
+}
+
+.brand{ display:flex; flex-direction:column; gap: 4mm; }
+.logo{ width: 64mm; height:auto; display:block; }
+
+.company{ display:flex; flex-direction:column; gap: 1.6mm; font-size: var(--text); }
+.company .name{ font-size: calc(var(--h1) - 4px); font-weight: 800; letter-spacing: -0.01em; }
+
+.muted{ color: var(--ink-soft); }
+.mono{ font-family: var(--font-mono); }
+
+.meta-card{
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--radius);
+  padding: 5mm;
+  background: var(--paper);
+}
+
+.flag{
+  font-size: var(--h1);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align:right;
+  margin: 0 0 3mm 0;
+}
+
+dl.meta{ margin:0; display:grid; grid-template-columns: 1fr; gap: 2.5mm; font-size: var(--text); }
+.meta .row{ display:flex; justify-content:space-between; gap: 8mm; }
+.meta dt{ margin:0; color: var(--ink-subtle); text-transform:uppercase; letter-spacing:0.12em; font-size: 10px; }
+.meta dd{ margin:0; font-weight: 750; font-family: var(--font-mono); }
+
+.addresses{ display:grid; grid-template-columns: 1fr 1fr; gap: 10mm; }
+
+.block{
+  font-size: var(--text);
+  line-height: 1.35;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--radius);
+  padding: 5mm;
+  background: var(--paper);
+}
+
+.block .label{
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-subtle);
+  margin-bottom: 2.5mm;
+  font-weight: 800;
+}
+
+.block .name{ font-weight: 800; margin-bottom: 1.5mm; }
+
+.pill{
+  display:inline-block;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 1.5mm 3mm;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-weight: 800;
+  background: transparent;
+}
+
+.details{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; }
+.card{ border: 1px solid var(--rule-soft); border-radius: var(--radius); padding: 5mm; background: var(--paper); font-size: var(--text); }
+.stack{ display:grid; gap: 1.4mm; margin-top: 3mm; }
+
+.table-card{ border: 1px solid var(--rule-soft); border-radius: var(--radius); overflow:hidden; background: var(--paper); }
+.table-head{ padding: 5mm; border-bottom: 1px solid var(--rule-soft); display:flex; align-items:flex-end; justify-content:space-between; gap: 6mm; }
+.table-sub{ font-size: 11px; color: var(--ink-soft); }
+
+table.lines{ width:100%; border-collapse: collapse; font-size: var(--text); }
+
+table.lines thead th{
+  text-align:left;
+  font-weight: 900;
+  padding: 3mm 5mm;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-subtle);
+  background: var(--chip);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+table.lines tbody td{ padding: 3.2mm 5mm; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+
+table.lines tbody tr:last-child td{ border-bottom:none; }
+.right{ text-align:right; }
+
+.totals-wrap{ display:grid; grid-template-columns: 1fr 90mm; gap: 10mm; padding: 5mm; border-top: 1px solid var(--rule-soft); }
+
+.totals{ justify-self:end; width: 90mm; font-size: var(--text); }
+.trow{ display:grid; grid-template-columns: 1fr auto; gap: 10mm; padding: 2mm 0; border-bottom: 1px solid var(--rule-soft); align-items:baseline; }
+.trow .lbl{ color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.10em; font-size: 10px; }
+.trow strong{ font-family: var(--font-mono); font-weight: 900; }
+.trow.total{ border-bottom: none; padding-top: 3mm; }
+.trow.total strong{ font-size: var(--text-lg); }
+
+.vat-breakdown{ margin-top: 4mm; border-top: 1px solid var(--rule-soft); padding-top: 2.5mm; font-size: 11px; color: var(--ink-soft); }
+.vat-breakdown table{ width:100%; border-collapse: collapse; }
+.vat-breakdown th, .vat-breakdown td{ padding: 1.4mm 0; }
+.vat-breakdown th{ text-align:left; font-weight: 900; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.10em; font-size: 10px; }
+
+.legal{ text-align:right; font-size: 11px; color: var(--ink-soft); margin-top: 4mm; }
+
+footer.footer{
+  margin-top: auto;
+  padding-top: 4mm;
+  border-top: 1px solid var(--rule-soft);
+  display:flex;
+  justify-content:space-between;
+  gap: 10mm;
+  align-items:flex-end;
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.pay{ display:flex; flex-wrap:wrap; gap: 8mm; }
+.kv{ display:flex; gap: 6px; white-space:nowrap; }
+.k{ color: var(--ink-subtle); font-weight: 900; }
+
+@media (max-width: 980px){
+  .sheet{ width: auto; min-height:auto; margin:0; border:none; border-radius:0; box-shadow:none; padding: 18px 16px 26px; }
+  .top{ grid-template-columns: 1fr; }
+  .flag{ text-align:left; }
+  .addresses{ grid-template-columns: 1fr; }
+  .details{ grid-template-columns: 1fr; }
+  .totals-wrap{ grid-template-columns: 1fr; }
+  .totals{ width: 100%; }
+}
+
+@media print{
+  @page{ size:A4; margin: 8mm; }
+  body{ background:#fff; color:#000; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .sheet{ margin:0; width:auto; min-height:auto; box-shadow:none; border: 1px solid #000; padding: 8mm; gap: 5mm; }
+  :root{ --text: 10px; --text-lg: 12px; --h1: 18px; }
+  .logo{ width: 46mm; }
+  table.lines thead{ display: table-header-group !important; }
+  table.lines thead th{ background: transparent !important; }
+  .details{ gap: 4mm; }
+  .card, .block, .meta-card{ padding: 3.8mm; }
+  .table-head{ padding: 3.8mm; }
+  table.lines thead th, table.lines tbody td{ padding-left: 3.8mm; padding-right: 3.8mm; }
+  .totals-wrap{ padding: 3.8mm; }
+}
+
+body.v07{
+  --accent: #111827;
+  --radius: 0px;
+  --chip: #f3f4f6;
+  --page-padding: 10mm;
+  --shadow: none;
+}
+
+
+body.v07 .sheet{ gap: 6mm; }
+body.v07 .company .name{ font-size: 16px; }
+body.v07 .flag{ font-size: 18px; }
+@media print{ body.v07{ --text: 9.5px; --text-lg: 11px; --h1: 16px; } }
+
+  </style>
+</head>
+<body class="v07">
+  <main class="sheet" role="document" aria-label="Invoice">
+
+    <header class="top" aria-label="Header">
+      <div class="brand">
+        <svg class="logo" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 270 92" aria-label="Company logo">
+          <image width="600" height="183" transform="scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeYAAAC3CAYAAADHNv0pAAAACXBIWXMAABYlAAAWJQFJUiTwAAAE7mlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDIgNzkuZjM1NGVmYywgMjAyMy8xMS8wOS0xMjo0MDoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI1LjUgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyNS0xMS0xN1QxNDo0MzoyNCswMTowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjUtMTEtMTdUMTU6MTU6MzArMDE6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjUtMTEtMTdUMTU6MTU6MzArMDE6MDAiIGRjOmZvcm1hdD0iaW1hZ2UvcG5nIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOmIxODM0YjI4LWYwYWUtMDQ0YS1hODgwLTMyM2MxNWNiNjMzMCIgeG1wTU06RG9jdW1lbnRJRD0i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"/>
+        </svg>
+        <div class="company">
+          <div class="name">{{CompanyName}}</div>
+          <div class="muted">{{CompanyAddress}} · VAT {{CompanyVAT}}</div>
+          <div class="muted">{{CompanyEmail}} · {{CompanyPhone}}</div>
+        </div>
+      </div>
+
+      <aside class="meta-card" aria-label="Invoice meta">
+        <div class="flag">Invoice</div>
+        <dl class="meta">
+          <div class="row"><dt>Invoice #</dt><dd>{{InvoiceNumber}}</dd></div>
+          <div class="row"><dt>Date</dt><dd>{{InvoiceDate}}</dd></div>
+          <div class="row"><dt>Due</dt><dd>{{DueDate}}</dd></div>
+          <div class="row"><dt>Currency</dt><dd>{{Currency}}</dd></div>
+          <div class="row"><dt>Total</dt><dd>{{Currency}} {{Total}}</dd></div>
+        </dl>
+      </aside>
+    </header>
+
+    <section class="addresses" aria-label="Parties">
+      <article class="block" aria-label="Seller">
+        <div class="label">Seller</div>
+        <div class="name">{{CompanyName}}</div>
+        <div>{{CompanyAddress}}</div>
+        <div class="muted">VAT {{CompanyVAT}}</div>
+      </article>
+
+      <article class="block" aria-label="Bill to">
+        <div class="label">Bill to</div>
+        <div class="name">{{ClientName}}</div>
+        <div>{{ClientAddress}}</div>
+        <div class="muted">VAT {{ClientVAT}}</div>
+        <div class="muted">Contact {{ContactName}} · {{ContactEmail}}</div>
+        <div class="muted">PO {{PONumber}} · Ref {{AdditionalNumber}} · Contract {{ContractID}}</div>
+      </article>
+    </section>
+
+    <section class="details" aria-label="Details">
+      <article class="card">
+        <div class="pill">Details</div>
+        <div class="stack">
+          <div><strong>Resource:</strong> {{ResourceName}}</div>
+          <div><strong>End-customer:</strong> {{EndCustomer}}</div>
+          <div><strong>Mission:</strong> {{Mission}}</div>
+          <div><strong>Period:</strong> {{PeriodStart}} – {{PeriodEnd}}</div>
+          <div><strong>Reference:</strong> {{Reference}}</div>
+          <div><strong>Cost center:</strong> {{CostCenter}}</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="pill">Payment</div>
+        <div class="stack">
+          <div><strong>Bank</strong> · {{BankName}}</div>
+          <div><strong>IBAN</strong> · <span class="mono">{{BankIBAN}}</span></div>
+          <div><strong>BIC</strong> · <span class="mono">{{BankBIC}}</span></div>
+          <div><strong>Message</strong> · <span class="mono">{{StructuredReference}}</span></div>
+          <div class="muted">Terms: {{PaymentTerms}} days</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="pill">Notes</div>
+        <div class="stack">
+          <div class="muted">{{Notes}}</div>
+          <div class="muted">{{ReverseChargeNote}}</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="table-card" aria-label="Invoice lines">
+      <header class="table-head">
+        <div>
+          <div class="pill">Invoice lines</div>
+          <div class="table-sub">{{ConsultantName}} · {{PeriodStart}} – {{PeriodEnd}}</div>
+        </div>
+        <div class="table-sub mono">Pay by {{DueDate}}</div>
+      </header>
+
+      <table class="lines">
+        <colgroup>
+          <col style="width: 40%" />
+          <col style="width: 12%" />
+          <col style="width: 18%" />
+          <col style="width: 10%" />
+          <col style="width: 20%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="right">Qty</th>
+            <th class="right">Rate excl. VAT</th>
+            <th class="right">VAT %</th>
+            <th class="right">Amount excl. VAT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div><strong>{{ConsultantName}}</strong> — {{Mission}}</div>
+              <div class="muted">Ref {{Reference}}</div>
+            </td>
+            <td class="right mono">{{BaseQuantity}} {{RateUnit}}</td>
+            <td class="right mono">{{Currency}} {{ChargeRate}} / {{RateUnit}}</td>
+            <td class="right mono">{{VATRate}}</td>
+            <td class="right mono">{{Currency}} {{BaseLineTotal}}</td>
+          </tr>
+          {{ExtrasRows}}
+        </tbody>
+      </table>
+
+      <div class="totals-wrap" aria-label="Totals">
+        <div></div>
+        <div>
+          <div class="totals">
+            <div class="trow">
+              <div class="lbl">Subtotal</div>
+              <strong>{{Currency}} {{Subtotal}}</strong>
+            </div>
+            <div class="trow">
+              <div class="lbl">VAT</div>
+              <strong>{{Currency}} {{VATAmount}}</strong>
+            </div>
+            <div class="trow total">
+              <div class="lbl">Total to pay</div>
+              <strong>{{Currency}} {{Total}}</strong>
+            </div>
+
+            <div class="vat-breakdown" aria-label="VAT breakdown">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Base</th>
+                    <th class="right">Rate</th>
+                    <th class="right">Tax</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="mono">{{Currency}} {{Subtotal}}</td>
+                    <td class="right mono">{{VATRate}}</td>
+                    <td class="right mono">{{Currency}} {{VATAmount}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="legal" aria-label="Legal">
+              <div>{{ReverseChargeNote}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" aria-label="Footer">
+      <div>
+        <div class="muted" style="font-weight:900; margin-bottom:2mm;">Payment information</div>
+        <div class="pay">
+          <div class="kv"><span class="k">{{BankName}}</span><span class="mono">{{BankIBAN}}</span></div>
+          <div class="kv"><span class="k">BIC</span><span class="mono">{{BankBIC}}</span></div>
+          <div class="kv"><span class="k">Message</span><span class="mono">{{StructuredReference}}</span></div>
+        </div>
+      </div>
+      <div class="mono">Invoice {{InvoiceNumber}} · 1/1</div>
+    </footer>
+
+  </main>
+</body>
+</html>
